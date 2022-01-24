@@ -1,14 +1,12 @@
 /* Reference: https://stackoverflow.com/questions/4384359/quick-way-to-implement-dictionary-in-c */
 
-char *strdup(char *);
-
 struct toneDict { /* table entry: */
     struct toneDict *next; /* next entry in linked list */
     char letter; /* defined name */
     float freq; /* replacement text */
 };
 
-#define HASHSIZE 16 /* 16 designated frequencies */
+#define HASHSIZE 26
 
 static struct toneDict *hashtab[HASHSIZE]; /* pointer table */
 
@@ -23,8 +21,8 @@ unsigned hash(char c)
 struct toneDict *lookup(char c)
 {
     struct toneDict *np;
-    for (np = hashtab[hash(s)]; np != NULL; np = np->next)
-        if c == np->letter
+    for (np = hashtab[hash(c)]; np != NULL; np = np->next)
+        if (c == np->letter)
           return np; /* found */
     return NULL; /* not found */
 }
@@ -35,25 +33,15 @@ struct toneDict *install(char c, float freq)
 {
     struct toneDict *np;
     unsigned hashval;
-    if ((np = lookup(name)) == NULL) { /* not found */
+    if ((np = lookup(c)) == NULL) { /* not found */
         np = (struct toneDict *) malloc(sizeof(*np));
         if (np == NULL)
           return NULL;
-        hashval = hash(name);
+        np->letter = c;
+        hashval = hash(c);
         np->next = hashtab[hashval];
         hashtab[hashval] = np;
-    } else /* already there */
-        free((void *) np->defn); /*free previous defn */
-    if ((np->defn = strdup(defn)) == NULL)
-       return NULL;
+    }
+    np->freq = freq;
     return np;
-}
-
-char *strdup(char s) /* make a duplicate of s */
-{
-    char *p;
-    p = (char *) malloc(1); /* +1 for ’\0’ */
-    if (p != NULL)
-       strcpy(p, s);
-    return p;
 }
