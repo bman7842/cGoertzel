@@ -1,9 +1,9 @@
+#define PI 3.141592653589793
 
-
-void Generate(float *buffer, float freq, int N, float sampleRate)
+void GenerateWave(float *buffer, float *freq, int N, float sampleRate)
 {
-  float step = (freq * 2.0 * PI) / sampleRate;
-  printf("FREQUENCY: %.6f\n", freq);
+  float step = (*freq * 2.0 * PI) / sampleRate;
+  printf("FREQUENCY: %.6f\n", *freq);
   printf("SAMPLERATE: %.6f\n", sampleRate);
   printf("STEP: %.6f\n", step);
 

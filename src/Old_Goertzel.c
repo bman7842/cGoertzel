@@ -38,7 +38,7 @@ long Goertzel(float *buffer, const int *kterm, float *taps, unsigned int N) {
 	return (long) abs((*sprev2) * (*sprev) + (*sprev * *sprev) - coeff*(*sprev)*(*sprev2));
 }
 
-void Generate(float *buffer, float freq, int N, float sampleRate)
+void GenerateWave(float *buffer, float freq, int N, float sampleRate)
 {
   float step = (freq * 2.0 * PI) / sampleRate;
   printf("FREQUENCY: %.6f\n", freq);
