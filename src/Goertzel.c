@@ -176,11 +176,12 @@ void clearBuffer() {
 /* TODO: Add audio file support */
 /* TODO: Fix file save functionality */
 void saveBuffer() {
-	char filePath[256]; /*256 char limit*/
+	char filePath[257]; /*256 char limit*/
 
+	gets(filePath); /* Clear input */
 	printf("Input file path: ");
-	fgets(filePath, sizeof(filePath), stdin);
-/*
+	gets(filePath);
+
 	FILE *outFile;
 	outFile = fopen(&filePath[0], "w");
 
@@ -194,7 +195,9 @@ void saveBuffer() {
 		}
 
 	}
-
-	printf(strcat("Saving file to: ", filePath));
-	fclose(outFile); */
+	printf("Success");
+	char msg[] = "Saving file to: ";
+	strcat(msg, filePath);
+	printf(msg);
+	fclose(outFile);
 }

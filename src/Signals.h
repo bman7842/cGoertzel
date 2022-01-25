@@ -1,4 +1,6 @@
-#define PI 3.141592653589793
+#define PI 								3.141592653589793
+#define AMPLITUDE					100.0
+#define VERT_TRANSLATION	0.0
 
 void GenerateWave(float *buffer, float *freq, int N, float sampleRate)
 {
@@ -10,7 +12,7 @@ void GenerateWave(float *buffer, float *freq, int N, float sampleRate)
   /* Generate the test data */
   for (int index = 0; index < N; index++)
   {
-    *buffer = (100.0 * sin((float)index * step) + 100.0); /* Make this step additive so multiple signal frequencies can be created */
+    *buffer += (AMPLITUDE * sin((float)index * step) + VERT_TRANSLATION); /* Make this step additive so multiple signal frequencies can be created */
     buffer++;
   }
 }
