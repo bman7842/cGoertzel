@@ -4,21 +4,11 @@
 #include <math.h>
 #include "ToneTable.h"
 #include "Signals.h"
-
-#define PI 3.141592653589793
-#define SAMPLING_RATE	4000.0	//4kHz
-#define BUFF_SIZE	320	//Block size
-
-/* global variables */
-float buffer[BUFF_SIZE];
+#include "Settings.h"
+#include "BufferManipulation.c"
 
 /* Definitions */
 long Goertzel(float *, const int *, float*, unsigned int);
-void loadBuffer();
-void clearBuffer();
-void printBuffer();
-void saveBuffer();
-void addSignal(int);
 
 /* Main loop */
 void main() {
@@ -37,6 +27,7 @@ void main() {
 		printf("2. Print buffer\n"); /* Load from */
 		printf("3. Save buffer\n"); /* TODO!!! */
 		printf("4. Test Frequency\n"); /* TODO!!! */ /* Test if a frequency is present */
+		printf("5. Settings\n");
 		printf("!----------------------------!\n");
 
 		printf("Enter: ");
@@ -58,6 +49,9 @@ void main() {
 					break;
 			case 4:
 					//testFreq();
+					break;
+			case 5:
+					updateSettings();
 					break;
 			default:
 					printf("Invalid response!");
@@ -90,114 +84,4 @@ long Goertzel(float *buffer, const int *kterm, float *taps, unsigned int N) {
 	}
 
 	return (long) abs((*sprev2) * (*sprev) + (*sprev * *sprev) - coeff*(*sprev)*(*sprev2));
-}
-
-void loadBuffer() {
-	int choice;
-	int active = 1;
-
-	while(active) {
-		printf("!-------Buffer Loading-------!\n");
-		printf("select from below:\n");
-		printf("0. BACK\n");
-		printf("1. Clear\n");
-		printf("2. Add Letter\n");
-		printf("3. Add Frequency\n");
-		printf("4. Load from .txt\n"); /* TODO!!! */
-		printf("5. Load from audio file\n"); /* TODO!!! */
-		printf("!----------------------------!\n");
-
-		printf("Enter: ");
-		scanf("%d", &choice);
-		printf("!----------------------------!\n");
-
-		switch(choice) {
-			case 0:
-					active = 0;
-					break;
-			case 1:
-					clearBuffer();
-					break;
-			case 2:
-					addSignal(1);
-					break;
-			case 3:
-					addSignal(0);
-					break;
-			default:
-					printf("Invalid response!");
-					break;
-		}
-	}
-}
-
-/* 
-	mode = 0; frequency input 
-	mode = 1; letter input
-*/
-void addSignal(int mode) {
-	float freq;
-
-	if (mode) {
-		char letter;
-		printf("Input a letter: ");
-		scanf(" %c", &letter);
-		freq = getFreq(letter);
-	} else {
-		printf("Input a frequency: ");
-		scanf("%f", &freq);
-	}
-
-	GenerateWave(&buffer[0], &freq, BUFF_SIZE, SAMPLING_RATE);
-	printf("Signal of %.2f Hz added to buffer!\n", freq);
-}
-
-void printBuffer() {
-	float *buffPtr = &buffer[0];
-
-	printf("BUFFER: ");
-	for (int i = 0; i < BUFF_SIZE; i++) {
-		printf("%.2f ", *buffPtr);
-		buffPtr++;
-	}
-	printf("\n");
-}
-
-void clearBuffer() {
-	float *buffPtr = &buffer[0];
-
-	for (int i = 0; i < BUFF_SIZE; i++) {
-		*buffPtr = 0.0;
-		buffPtr++;
-	}
-	printf("Buffer cleared!\n");
-}
-
-/* TODO: Add audio file support */
-/* TODO: Fix file save functionality */
-void saveBuffer() {
-	char filePath[257]; /*256 char limit*/
-
-	gets(filePath); /* Clear input */
-	printf("Input file path: ");
-	gets(filePath);
-
-	FILE *outFile;
-	outFile = fopen(&filePath[0], "w");
-
-	char outputTxt[BUFF_SIZE*2 - 1] = "";
-
-	for (int i=0; i<BUFF_SIZE; i++) {
-		if (i == BUFF_SIZE-1) {
-			fprintf(outFile, "%.2f", buffer[i]);
-		} else {
-			fprintf(outFile, "%.2f\n", buffer[i]);
-		}
-
-	}
-	printf("Success");
-	char msg[] = "Saving file to: ";
-	strcat(msg, filePath);
-	printf(msg);
-	fclose(outFile);
 }
