@@ -9,6 +9,7 @@
 
 /* Definitions */
 long Goertzel(float *, const int *, float*, unsigned int);
+void testFreq();
 
 /* Main loop */
 void main() {
@@ -48,7 +49,7 @@ void main() {
 					saveBuffer();
 					break;
 			case 4:
-					//testFreq();
+					testFreq();
 					break;
 			case 5:
 					updateSettings();
@@ -84,4 +85,27 @@ long Goertzel(float *buffer, const int *kterm, float *taps, unsigned int N) {
 	}
 
 	return (long) abs((*sprev2) * (*sprev) + (*sprev * *sprev) - coeff*(*sprev)*(*sprev2));
+}
+
+int computeK(float *freq) {
+	return (int) (BUFF_SIZE*(*freq))/SAMPLING_RATE;
+}
+
+void testFreq() {
+	float freq;
+
+	printf("Input frequency: ");
+	scanf("%f", &freq);
+
+	int kterm = computeK(&freq);
+
+	float taps[2];
+	long squarMag = Goertzel(MAIN_BUFFER, &kterm, &taps[0], BUFF_SIZE);
+
+	printf("Squared magnitude: %ld\n", squarMag);
+	char response[4] = "NO";
+	if (squarMag>CUTOFF) {
+		strcpy(response, "YES");
+	}
+	printf(" > %ld? %s\n", CUTOFF, response);
 }
