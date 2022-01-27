@@ -1,3 +1,5 @@
+#include "Messages.c"
+
 float *MAIN_BUFFER;
 
 
@@ -11,7 +13,8 @@ void loadBuffer() {
 	int active = 1;
 
 	while(active) {
-		printf("!-------Buffer Loading-------!\n");
+
+		printf(createStrDivide("Buffer Loading"));
 		printf("select from below:\n");
 		printf("0. BACK\n");
 		printf("1. Clear\n");
@@ -19,11 +22,11 @@ void loadBuffer() {
 		printf("3. Add Frequency\n");
 		printf("4. Load from .txt\n"); /* TODO!!! */
 		printf("5. Load from audio file\n"); /* TODO!!! */
-		printf("!----------------------------!\n");
+		printf(createStrDivide(""));
 
 		printf("Enter: ");
 		scanf("%d", &choice);
-		printf("!----------------------------!\n");
+		printf(createStrDivide(""));
 
 		switch(choice) {
 			case 0:
@@ -108,9 +111,10 @@ void saveBuffer() {
 		tmpPtr++;
 
 	}
-	printf("Success");
+	printf("Success... ");
 	char msg[] = "Saving file to: ";
 	strcat(msg, filePath);
 	printf(msg);
+	printf("\n");
 	fclose(outFile);
 }

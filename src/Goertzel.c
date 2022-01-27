@@ -19,7 +19,8 @@ void main() {
 	int choice;
 	int active = 1;
 
-	printf("!------Goertzel Testing------!\n");
+	//printf("!------Goertzel Testing------!\n");
+	printf(createStrDivide("Goertzel Testing"));
 
 	while (active) {
 		printf("select from below:\n");
@@ -29,11 +30,11 @@ void main() {
 		printf("3. Save buffer\n"); /* TODO!!! */
 		printf("4. Test Frequency\n"); /* TODO!!! */ /* Test if a frequency is present */
 		printf("5. Settings\n");
-		printf("!----------------------------!\n");
+		printf(createStrDivide(""));
 
 		printf("Enter: ");
 		scanf("%d", &choice);
-		printf("!----------------------------!\n");
+		printf(createStrDivide(""));
 
 		switch(choice) {
 			case 0:
